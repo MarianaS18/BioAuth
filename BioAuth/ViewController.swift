@@ -18,6 +18,8 @@ class ViewController: UIViewController {
         context.localizedCancelTitle = "End session"
         context.localizedFallbackTitle = "Use password"
         context.localizedReason = "The app needs your authentication"
+        // if user use touchID user do not need reauthenticate again during the time you choose
+        context.touchIDAuthenticationAllowableReuseDuration = LATouchIDAuthenticationMaximumAllowableReuseDuration // max time allowed -  5 min
         evaluatePolicy()
     }
 
