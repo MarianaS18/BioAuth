@@ -45,8 +45,11 @@ class ViewController: UIViewController {
                     switch evalErrCode.code {
                     case LAError.Code.userCancel:
                         print("user cancelled")
+                    case LAError.Code.appCancel:
+                        print("app cancelled")
                     case LAError.Code.userFallback:
                         print("fallback")
+                        self.promptForCode()
                     case LAError.Code.authenticationFailed:
                         print("failed")
                     default:
@@ -54,7 +57,14 @@ class ViewController: UIViewController {
                     }
                 }
             }
-        } else {
+            
+            Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { (t) in
+                self.context.invalidate()
+            }
+            
+        }
+        
+        else {
             print("can't evaluate")
             print(errorCanEval?.localizedDescription ?? "no error desc")
             
@@ -69,5 +79,21 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    func promptForCode() {
+        let ac = UIAlertController(title: "Enter Code", message: "Enter your user code", preferredStyle: .alert)
+        
+        ac.addTextField { tf in
+            tf.placeholder = "Enter User Code"
+            tf.keyboardType = .numberPad
+            tf.isSecureTextEntry = true
+        }
+        
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { aa in
+            print(ac.textFields?.first?.text ?? "n")
+        }))
+        
+        self.present(ac, animated: true, completion: nil)
+    }
 }
-
+// 
